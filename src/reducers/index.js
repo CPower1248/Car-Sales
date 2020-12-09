@@ -1,3 +1,5 @@
+import { ADD_FEAT, REMOVE_FEAT, TOTAL } from "../actions"
+
 const initialState = {
     additionalPrice: 0,
     car: {
@@ -17,8 +19,20 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
-        default:
-            return state
+      case ADD_FEAT:
+        const newFeat = state.additionalFeatures[action.payload - 1]
+        return ({...state, car: {...state.car, features: [...state.car.features, newFeat]}})
+      case REMOVE_FEAT:
+        const remFeat = state.car.features.filter(item => {
+          if (item.id !== action.payload) {
+            return item
+          }
+        })
+        return ({...state, car: {...state.car, features: remFeat}})
+      case TOTAL:
+        return ({...state, additionalPrice: action.payload})
+      default:
+        return state
     }
 }
 
